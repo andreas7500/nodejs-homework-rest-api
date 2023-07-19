@@ -3,7 +3,7 @@ const getById = require("./getById");
 const add = require("./add");
 const update = require("./update");
 const remove = require("./remove");
-const { ctrlWrapper } = require("../../helpers");
+const ctrlWrapper = require("../../decorators/ctrlWrapper");
 
 module.exports = {
   getAll: ctrlWrapper(getAll),

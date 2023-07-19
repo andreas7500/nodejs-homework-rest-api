@@ -1,9 +1,10 @@
 const express = require("express");
 
-const {
-  validateCreateContact,
-  validateUpdateContact,
-} = require("../../helpers/dataValidator");
+const validateBody = require("../../decorators/validateBody");
+
+const { isEmptyBody } = require("../../middlewares/index");
+
+const contactSchema = require("../../schemas/contact-schemas");
 
 const router = express.Router();
 
@@ -13,9 +14,19 @@ router.get("/", ctrl.getAll);
 
 router.get("/:contactId", ctrl.getById);
 
-router.post("/", validateCreateContact, ctrl.add);
+router.post(
+  "/",
+  isEmptyBody,
+  validateBody(contactSchema.contactAddSchema),
+  ctrl.add
+);
 
-router.put("/:contactId", validateUpdateContact, ctrl.update);
+router.put(
+  "/:contactId",
+  isEmptyBody,
+  validateBody(contactSchema.contactAddSchema),
+  ctrl.update
+);
 
 router.delete("/:contactId", ctrl.remove);
 
