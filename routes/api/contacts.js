@@ -1,25 +1,33 @@
-const express = require('express')
+const express = require("express");
 
-const router = express.Router()
+const validateBody = require("../../decorators/validateBody");
 
-router.get('/', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
+const { isEmptyBody } = require("../../middlewares/index");
 
-router.get('/:contactId', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
+const contactSchema = require("../../schemas/contact-schemas");
 
-router.post('/', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
+const router = express.Router();
 
-router.delete('/:contactId', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
+const ctrl = require("../../controllers/contacts");
 
-router.put('/:contactId', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
+router.get("/", ctrl.getAll);
 
-module.exports = router
+router.get("/:contactId", ctrl.getById);
+
+router.post(
+  "/",
+  isEmptyBody,
+  validateBody(contactSchema.contactAddSchema),
+  ctrl.add
+);
+
+router.put(
+  "/:contactId",
+  isEmptyBody,
+  validateBody(contactSchema.contactAddSchema),
+  ctrl.update
+);
+
+router.delete("/:contactId", ctrl.remove);
+
+module.exports = router;
