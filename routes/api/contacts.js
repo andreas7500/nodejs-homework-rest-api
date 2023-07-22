@@ -2,7 +2,7 @@ const express = require("express");
 
 const validateBody = require("../../decorators/validateBody");
 
-const { isEmptyBody } = require("../../middlewares/index");
+const { isEmptyBody, isValidId } = require("../../middlewares/index");
 
 const contactSchema = require("../../schemas/contact-schemas");
 
@@ -12,7 +12,7 @@ const ctrl = require("../../controllers/contacts");
 
 router.get("/", ctrl.getAll);
 
-router.get("/:contactId", ctrl.getById);
+router.get("/:contactId", isValidId, ctrl.getById);
 
 router.post(
   "/",
@@ -23,11 +23,20 @@ router.post(
 
 router.put(
   "/:contactId",
+  isValidId,
   isEmptyBody,
   validateBody(contactSchema.contactAddSchema),
   ctrl.update
 );
 
-router.delete("/:contactId", ctrl.remove);
+router.patch(
+  "/:contactId/favorite",
+  isValidId,
+  isEmptyBody,
+  validateBody(contactSchema.updateFavoriteSchema),
+  ctrl.update
+);
+
+router.delete("/:contactId", isValidId, ctrl.remove);
 
 module.exports = router;
