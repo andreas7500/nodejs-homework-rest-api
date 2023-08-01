@@ -11,22 +11,22 @@ const { authenticate } = require("../../middlewares/index");
 const authRouter = express.Router();
 
 authRouter.post(
-  "/signup",
+  "/register",
 
   validateBody(usersSchemas.userSignupSchema),
-  ctrl.signup
+  ctrl.register
 );
 
 authRouter.post(
-  "/signin",
+  "/login",
 
   validateBody(usersSchemas.userSigninSchema),
-  ctrl.signin
+  ctrl.login
 );
 
 authRouter.get("/current", authenticate, ctrl.getCurrent);
 
-authRouter.post("/signout", authenticate, ctrl.signout);
+authRouter.post("/logout", authenticate, ctrl.logout);
 
 authRouter.patch(
   "/",
