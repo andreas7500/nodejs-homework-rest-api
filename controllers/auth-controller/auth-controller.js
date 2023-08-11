@@ -51,15 +51,16 @@ const register = async (req, res) => {
 };
 
 const verifyEmailUser = async (req, res) => {
-  const { verificationCode } = req.params;
-  const user = await User.findOne({ verificationCode });
+  const { verificationToken } = req.params;
+  const user = await User.findOne({ verificationToken });
+
   if (!user) {
     throw HttpError(404, "User not found");
   }
 
   await User.findByIdAndUpdate(user._id, {
     verify: true,
-    verificationCode: "",
+    verificationToken: null,
   });
 
   res.json({
